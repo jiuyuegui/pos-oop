@@ -1,31 +1,30 @@
-function PrintItems(inputs) {     //抽象出输入对象，它具有处理自身格式以及构造打印信息等功能
-  this.inputs = inputs;           //注意,若在函数中实现对该静态!数组!变量的赋值再修改,会保存修改结果
+function PrintItems(inputs) {     //输入对象，它具有处理自身格式以及构造打印信息等功能
+  this.inputs = inputs;
+  this.tidyInputs = {};
+  this.container();               //构造函数
 };
 
 PrintItems.prototype.container = function() {
     var input = this.inputs;
-    var tidyInputs = {};
+    var tidyinput = this.tidyInputs;
     for(var i = 0; i < input.length; i++) {
       var n = 1;
-      var temp = input[i];        //由于下面某些函数拆开写会多次调用该函数,故这是自己问题,待解决...
       if(input[i].indexOf('-') > 0) {
         n = parseInt((input[i].split('-'))[1]);
         input[i] = (input[i].split('-'))[0];
       }
       var key = input[i];
-      if(!tidyInputs[key]) {
-          tidyInputs[key] = 0;
+      if(!tidyinput[key]) {
+          tidyinput[key] = 0;
       }
-      tidyInputs[key] += n;
-      input[i] = temp;
+      tidyinput[key] += n;
     }
-    return tidyInputs;
 };
 
 PrintItems.prototype.wholeItems = function() {
-  var inputsObj = this.container();
+  var inputsObj = this.tidyInputs;
   var collection = [];
-  for(var key in inputsObj) {   //若是不用hasOwnProperty,forin循环可能会找到原型对象导致遍历次数不确定
+  for(var key in inputsObj) {    //用hasOwnProperty确保for in准确性
     if(inputsObj.hasOwnProperty(key)) {
     var shoppingitem = new ShoppingItems(key,inputsObj[key]);
     collection.push(shoppingitem.enrich());
