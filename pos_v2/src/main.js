@@ -1,4 +1,4 @@
 function printInventory(inputs) {
-  var printItems = new PrintItems(inputs);
-  console.log(printItems.getPrintInfo());
+  var printItem = new PrintItems(inputs);
+  console.log(printItem.getPrintInfo());
 }
